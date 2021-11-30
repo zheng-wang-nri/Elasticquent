@@ -370,7 +370,8 @@ trait ElasticquentTrait
     {
         $params = array(
             'index' => $this->getIndexName(),
-            'type' => $this->getTypeName(),
+            // 'type' => $this->getTypeName(),
+            'type' => '_doc'
         );
 
         if ($getIdIfPossible && $this->getKey()) {

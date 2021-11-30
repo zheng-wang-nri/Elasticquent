@@ -49,7 +49,7 @@ trait ElasticquentCollectionTrait
                     ),
                 );
 
-                $params['body'][] = $item->getIndexDocumentData();
+                $params['body'][] = [$item->getIndexName() => $item->getIndexDocumentData()];
             }
 
             $result = $this->getElasticSearchClient()->bulk($params);

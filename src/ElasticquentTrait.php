@@ -302,7 +302,7 @@ trait ElasticquentTrait
         $params = $this->getBasicEsParams();
 
         // Get our document body data.
-        $params['body'] = $this->getIndexDocumentData();
+        $params['body'][$this->getIndexName()] = $this->getIndexDocumentData();
 
         // The id for the document must always mirror the
         // key for this model, even if it is set to something
@@ -530,12 +530,18 @@ trait ElasticquentTrait
         }
 
         $mappingProperties = $instance->getMappingProperties();
+        $index['body']['mappings']['_source'] = array('enabled' => true);
         if (!is_null($mappingProperties)) {
-            $index['body']['mappings'][$instance->getTypeName()] = [
-                '_source' => array('enabled' => true),
+            $index['body']['mappings']['properties'][$instance->getIndexName()] = [         
                 'properties' => $mappingProperties,
             ];
         }
+        // if (!is_null($mappingProperties)) {
+        //     $index['body']['mappings'][$instance->getTypeName()] = [
+        //         '_source' => array('enabled' => true),
+        //         'properties' => $mappingProperties,
+        //     ];
+        // }
 
         return $client->indices()->create($index);
     }
